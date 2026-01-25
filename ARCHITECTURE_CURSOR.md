@@ -178,8 +178,8 @@ graph LR
         DATE_CHECK --> UTILS
         AMOUNT_CHECK --> UTILS
         EMPTY_CHECK --> UTILS
-        UTILS --> PROMPT[build_prompt()]
-        PROMPT --> LLM_CALL[ollama_suggest()]
+        UTILS --> PROMPT[Build Prompt]
+        PROMPT --> LLM_CALL[Ollama Suggest]
     end
 
     subgraph "External Services"
@@ -188,7 +188,7 @@ graph LR
     end
 
     subgraph "Response Layer"
-        OLLAMA --> PARSE[parse_llm_response()]
+        OLLAMA --> PARSE[Parse LLM Response]
         PARSE --> VALIDATE_CAT[Validate Categories]
         VALIDATE_CAT --> RESPONSE_MODEL[Pydantic Response]
         RESPONSE_MODEL --> JSON[JSON Response]
