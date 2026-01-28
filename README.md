@@ -64,9 +64,9 @@ See [data/README.md](data/README.md) for detailed format descriptions.
 
 ### Source Repositories
 
-- budget_claude: `../budget_claude/`
-- budget_cursor: `../budget_cursor/`
-- budget_tracing: `../budget_tracing/` (shared Langfuse monitoring)
+- **[budget_claude](https://github.com/bdmckean/budget_claude)** - Flask + Claude Code implementation
+- **[budget_cursor](https://github.com/bdmckean/budget_cursor)** - FastAPI + Cursor implementation
+- **[budget_tracing](https://github.com/bdmckean/budget_tracing)** - Shared Langfuse monitoring server
 
 ### Technical Stack
 
