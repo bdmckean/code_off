@@ -17,9 +17,9 @@ graph TB
         FASTAPI[FastAPI Server<br/>Port 18080<br/>Uvicorn ASGI]
 
         subgraph "App Package"
-            MAIN[main.py<br/>API Routes<br/>700 LOC]
-            UTILS[utils.py<br/>Helper Functions<br/>200 LOC]
-            VALIDATOR[csv_validator.py<br/>11 Validation Rules<br/>400 LOC]
+            MAIN[main.py<br/>API Routes<br/>1,344 LOC]
+            UTILS[utils.py<br/>Helper Functions<br/>193 LOC]
+            VALIDATOR[csv_validator.py<br/>11 Validation Rules<br/>363 LOC]
             MODELS[models.py<br/>Pydantic Schemas]
             TRACER[langfuse_tracer.py<br/>LLM Monitoring]
         end
@@ -65,7 +65,7 @@ budget_cursor/
 ├── backend/
 │   ├── app/
 │   │   ├── __init__.py
-│   │   ├── main.py                 [700 LOC - API routes + business logic]
+│   │   ├── main.py                 [1,344 LOC - API routes + business logic]
 │   │   │   ├── FastAPI app instance
 │   │   │   ├── CORS middleware
 │   │   │   ├── 12 API endpoints with type hints
@@ -76,12 +76,12 @@ budget_cursor/
 │   │   │   ├── MapRequest
 │   │   │   ├── BulkMapRequest
 │   │   │   └── CategoryResponse
-│   │   ├── utils.py                [200 LOC - Helper functions]
+│   │   ├── utils.py                [193 LOC - Helper functions]
 │   │   │   ├── ollama_suggest()
 │   │   │   ├── ollama_bulk_suggest()
 │   │   │   ├── build_prompt()
 │   │   │   └── parse_llm_response()
-│   │   ├── csv_validator.py        [400 LOC - Comprehensive validation]
+│   │   ├── csv_validator.py        [363 LOC - Comprehensive validation]
 │   │   │   ├── CSVValidator class
 │   │   │   ├── 11 validation rules
 │   │   │   ├── Type checking
@@ -264,7 +264,7 @@ class CSVValidator:
 ### 1. Modular App Package
 **Rationale**: Maintainability and testability
 - Separation of concerns across files
-- Each module <500 LOC (except main.py at 700)
+- main.py: 1,344 LOC, utils: 193 LOC, validator: 363 LOC
 - Easy to test in isolation
 - Trade-off: More import complexity, slightly slower initial development
 
@@ -316,7 +316,7 @@ Trade-off: Added complexity for current sync operations
 
 ## Component Responsibilities
 
-### main.py (700 LOC)
+### main.py (1,344 LOC)
 ```python
 # API Endpoints (12 total):
 @app.get("/api/health")              # Health check
@@ -339,7 +339,7 @@ Trade-off: Added complexity for current sync operations
 - Error handling (HTTPException)
 ```
 
-### utils.py (200 LOC)
+### utils.py (193 LOC)
 ```python
 # Helper Functions:
 def ollama_suggest(transaction, history, categories)
@@ -363,7 +363,7 @@ def load_historical_mappings(progress_data, limit=100)
     # Returns: List[Dict] of examples
 ```
 
-### csv_validator.py (400 LOC)
+### csv_validator.py (363 LOC)
 ```python
 class CSVValidator:
     def validate_csv(self, csv_content: str) -> Dict
@@ -625,7 +625,7 @@ except Exception as e:
 | Aspect | budget_cursor (FastAPI) | budget_claude (Flask) |
 |--------|------------------------|----------------------|
 | **Structure** | Modular `app/` package (4 files) | Monolithic `app.py` (1 file) |
-| **LOC** | main.py: 700, utils: 200, validator: 400 | app.py: 1000+ |
+| **LOC** | main.py: 1,344, utils: 193, validator: 363 | app.py: 1,301 |
 | **Type Safety** | ✅ Pydantic models, type hints | ❌ Duck typing |
 | **Validation** | ✅ 11 CSV rules + auto Pydantic | ⚠️ Basic checks |
 | **Error Messages** | ✅ Field-level, structured | ⚠️ Generic messages |

@@ -52,6 +52,16 @@ For builder community interested in:
 - Practical prompt engineering lessons
 - Production readiness assessment
 
+### Sample Data
+
+The `data/` directory contains anonymized sample CSV files in multiple formats for testing both applications:
+- `simple_transactions.csv` - Basic 3-column format (14 rows)
+- `credit_card_transactions.csv` - Credit card statement format (15 rows)
+- `chase_transactions.csv` - Chase bank export format (13 rows)
+- `bank_checking_transactions.csv` - Bank checking format (15 rows)
+
+See [data/README.md](data/README.md) for detailed format descriptions.
+
 ### Source Repositories
 
 - budget_claude: `../budget_claude/`

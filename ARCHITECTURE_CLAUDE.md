@@ -14,7 +14,7 @@ graph TB
     end
 
     subgraph "Docker Container - Backend"
-        FLASK[Flask Server<br/>Port 5000<br/>app.py - 1000+ LOC]
+        FLASK[Flask Server<br/>Port 5000<br/>app.py - 1,301 LOC]
         ROUTES[API Routes<br/>12 endpoints]
         LLM_LOGIC[LLM Integration<br/>Ollama Client<br/>Batch Processing]
         TRACER[Langfuse Tracer<br/>langfuse_tracer.py]
@@ -54,7 +54,7 @@ graph TB
 ```
 budget_claude/
 ├── backend/
-│   ├── app.py                      [1000+ LOC - Monolithic Flask app]
+│   ├── app.py                      [1,301 LOC - Monolithic Flask app]
 │   │   ├── CORS Configuration
 │   │   ├── 12 API Endpoints
 │   │   ├── LLM Integration Logic
@@ -153,7 +153,7 @@ graph LR
 
 ### 1. Monolithic Backend (app.py)
 **Rationale**: Rapid iteration and simplicity
-- Single file contains all logic (1000+ LOC)
+- Single file contains all logic (1,301 LOC)
 - Easier to understand data flow
 - No import complexity
 - Trade-off: Lower maintainability at scale
@@ -314,7 +314,7 @@ graph TD
 
 ### Scalability Limitations
 1. **JSON file storage** doesn't support concurrent users
-2. **Monolithic app.py** becomes harder to maintain beyond 1500+ LOC
+2. **Monolithic app.py** at 1,301 LOC is already substantial for a single file
 3. **No database** limits query capabilities and reporting
 4. **No user authentication** - single-user assumption
 
