@@ -22,9 +22,9 @@ Both apps implement identical functionality: AI-powered transaction categorizati
 - Claude Code: 0% test coverage, no validation, 1,301 LOC single file
 - Cursor: 65% test coverage, comprehensive validation, modular structure (1,900 LOC total)
 
-**Ease of use**: 
+**Ease of use**:
 - Claude was more difficult to get the results I wanted.  There was sometimes regression also when adding new features
-- Cursor took a but less prompting nd acheived better results
+- Cursor took a bit less prompting and achieved better results
 
 **Results**: 
 - At this stage I prefer both the appearance of the cursor app and also the code organization and use of tests and FastAPI.
