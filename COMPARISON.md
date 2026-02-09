@@ -8,13 +8,31 @@ This document compares two implementations of the same expense tracking applicat
 
 Both apps implement identical functionality: AI-powered transaction categorization using local LLMs (Ollama with llama3.1:8b).
 
+### Costs
 
-### Key Findings
+Both projects were completed in parallel over 4 weeks across two months, spending a few hours at a time.
+
+#### Cursor Costs 
+-- Used only Cursor Pro subscription $20 / month 
+-- Less than $40
+#### Claude Costs
+-- Started with Claude Pro subscription $20 / month
+-- Ran out of usage with the Claude Pro login, so switched to using the API
+-- Used additional $19.88 from API
+-- Less than $60
+
+### Approach
+Both projects started with a basic prompt describing the app and the requested initial functionality. The AI coding tools started diverging within 4-5 prompts, so the total prompt stream turned out to be quite different. 
+
+## Key Findings
 
 **Development Speed:**
-- **To MVP**: Claude was faster getting the first function of selecting and reading CSVs. About the same amount of time spent on both approaches. 
+- **To MVP**: 
+Both Claude and Cursor reached basic functionality (finding and opening a CSV file) very quickly, within a few minutes of starting.
+
 
 **Architecture:**
+Note that the implementation instructions were to build a React frontend and a Python backend. Cursor built out a much better organized repo than Claude without specific instructions to do so.
 - Claude Code → Monolithic Flask app (rapid iteration, technical debt)
 - Cursor → Modular FastAPI app (production-ready, maintainable)
 
@@ -22,12 +40,12 @@ Both apps implement identical functionality: AI-powered transaction categorizati
 - Claude Code: 0% test coverage, no validation, 1,301 LOC single file
 - Cursor: 65% test coverage, comprehensive validation, modular structure (1,900 LOC total)
 
-**Ease of use**:
-- Claude was more difficult to get the results I wanted.  There was sometimes regression also when adding new features
-- Cursor took a bit less prompting and achieved better results
+**Ease of Use**:
+- Claude was more difficult to get the results I wanted. There were also occasional regressions when adding new features.
+- Cursor took a bit less prompting and achieved better results.
 
 **Results**: 
-- At this stage I prefer both the appearance of the cursor app and also the code organization and use of tests and FastAPI.
+- At this stage, I prefer both the appearance of the Cursor app and its code organization, including the use of tests and FastAPI.
 
 
 ## Architecture Comparison
@@ -312,7 +330,7 @@ def test_bulk_map_invalid_indices(client):
 | **Testing setup** | 0 hours | 1 hour |
 | **Total** | ~3-4 hours | ~5-6 hours |
 
-**Result**: Claude Code is **~40% faster to MVP** (3 hours vs 5 hours)
+**Result**: Claude Code is a little faster (3 hours vs 5 hours) 
 
 ### Full Development Cost (2 Weeks)
 
@@ -324,105 +342,6 @@ def test_bulk_map_invalid_indices(client):
 | **Adding tests** | N/A | 1 hour (already done) | Cursor generated tests upfront |
 | **Total (2 weeks)** | **15 hours** | **9 hours** | 🏆 Cursor is **40% faster overall** |
 
-**Key Insight**: Fast to first demo ≠ Fast to stable product
-
-#### Why the Reversal?
-
-**budget_claude accumulated technical debt:**
-- No validation → Runtime errors in production
-- No types → TypeError crashes from frontend
-- No tests → Refactoring broke features
-- Monolithic file → Hard to navigate and maintain
-
-**budget_cursor paid upfront, saved later:**
-- Pydantic validation → Caught errors at API boundary
-- Comprehensive CSV validator → Rejected bad data early
-- Test suite → Caught regressions during changes
-- Modular structure → Easy to locate and fix issues
-
-### AI Assistant Performance
-
-#### Claude Code (budget_claude)
-**Strengths:**
-- ✅ Generated complete LLM integration on first prompt
-- ✅ Elegant batch processing logic
-- ✅ Seamless Langfuse integration
-- ✅ Understood context across long conversations
-- ✅ Good at iterative refinement
-
-**Weaknesses:**
-- ⚠️ Favored monolithic structure
-- ⚠️ Minimal input validation
-- ⚠️ No test generation
-- ⚠️ Less defensive error handling
-
-**Best For:**
-- Rapid prototyping
-- Exploratory development
-- Demo/MVP creation
-- Single-developer projects
-
-#### Cursor (budget_cursor)
-**Strengths:**
-- ✅ Generated modular, maintainable structure
-- ✅ Comprehensive CSV validation (11 rules)
-- ✅ Created test suite with fixtures
-- ✅ Better inline suggestions during manual coding
-- ✅ Production-ready error handling
-
-**Weaknesses:**
-- ⚠️ Required more manual structuring decisions
-- ⚠️ Slower initial development
-- ⚠️ Less conversational, more "code completion"
-- ⚠️ Needed manual Docker networking fixes
-
-**Best For:**
-- Production applications
-- Team projects
-- Long-term maintenance
-- Projects requiring high test coverage
-
-## Prompt Engineering Lessons
-
-### What Worked Well
-
-#### Claude Code
-```plaintext
-✅ "Build a Flask app that uses Ollama for transaction categorization"
-   → Generated complete working backend in one go
-
-✅ "Add batch processing for 5 transactions at once"
-   → Understood context, modified existing code correctly
-
-✅ "Integrate Langfuse tracing for LLM monitoring"
-   → Added tracing without breaking existing functionality
-```
-
-#### Cursor
-```plaintext
-✅ "Create a FastAPI app with Pydantic models for type safety"
-   → Generated structured app package
-
-✅ "Add comprehensive CSV validation with edge case handling"
-   → Created separate validator module with 11 rules
-
-✅ "Write pytest tests for the validator module"
-   → Generated test suite with fixtures
-```
-
-### Manual Intervention Required
-
-#### Both Tools
-```plaintext
-❌ "Ensure LLM doesn't hallucinate categories"
-   → Both needed manual prompt refinement to constrain outputs
-
-❌ "Handle Docker networking to host Ollama"
-   → Both required manual host.docker.internal configuration
-
-❌ "Optimize batch size for quality vs speed"
-   → Both needed empirical testing (settled on 5 items)
-```
 
 ## Performance Metrics
 
@@ -438,19 +357,6 @@ def test_bulk_map_invalid_indices(client):
 
 **Analysis**: budget_cursor's validation overhead is minimal (<100ms) but provides significant quality improvement.
 
-### LLM Token Usage
-
-Both apps use identical prompting strategies:
-
-```
-Operation              Input Tokens    Output Tokens    Cost (local)
-Single Suggestion:     ~300           ~50              $0
-Batch (5 items):       ~700           ~100             $0
-With 100 examples:     +2000          (same)           $0
-
-Local (Ollama):        Free           Free             $0/month
-Cloud (GPT-4):         $0.03/1K       $0.06/1K         $20-50/month
-```
 
 ## Code Quality Metrics
 
@@ -563,12 +469,6 @@ async def ollama_suggest():  # Decorator caching
 → Generated complete batch processing logic
 ```
 
-**Cursor**: Works best with specific, technical prompts
-```plaintext
-"Create a CSVValidator class with methods to validate date formats, amount parsing, and empty rows"
-→ Generated structured validation module
-```
-
 
 ## Recommendations
 
@@ -586,11 +486,6 @@ async def ollama_suggest():  # Decorator caching
 - ✅ Need to add features over time
 - ✅ Require high reliability
 - ✅ **Total development time matters more than initial speed** (9 hours vs 15 hours over 2 weeks)
-
-### Hybrid Approach
-1. **Start with Claude Code** for rapid prototyping
-2. **Refactor with Cursor** for production hardening
-3. Use Claude Code's creativity + Cursor's structure
 
 ## Conclusion
 
